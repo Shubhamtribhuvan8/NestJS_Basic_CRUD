@@ -106,10 +106,9 @@ Update an existing task using its ID.
         Method: DELETE
         URL: http://localhost:3000/tasks/:id
 
+```
 Response Formats:
     Success (Status 200 OK):
-
-
 [
   {
     "_id": "Task ID",
@@ -119,10 +118,7 @@ Response Formats:
     "__v": 0
   }
 ]
-
 Error - Task Not Found (Status 404 NOT FOUND):
-
-
 {
   "message": "Task with ID :id not found",
   "error": "Not Found",
