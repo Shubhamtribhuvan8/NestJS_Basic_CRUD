@@ -62,65 +62,91 @@ $ npm run test:cov
 # Endpoints:
 
 ## Get All Tasks
-
-    Get a list of all tasks in the system.
-        Method: GET
-        URL: http://localhost:3000/tasks
-
-    Create a New Task
-
-    Create a new task with the provided data.
-
-        Method: POST
-
-        URL: http://localhost:3000/tasks
-
-        Request Body:
-
-    {
-      "title": "Task Title",
-      "description": "Task Description",
-      "status": "Task Status"
-    }
+# Endpoints
 ```
-Update a Task
-
-Update an existing task using its ID.
-
-    Method: PUT
-
-    URL: http://localhost:3000/tasks/:id
-
-    Request Body:
-
-        {
-          "title": "Updated Title",
-          "description": "Updated Description",
-          "status": "Updated Status"
-        }
-
-   ```     
-    Delete a Task
-
-    Delete a task using its ID.
-        Method: DELETE
-        URL: http://localhost:3000/tasks/:id
-
-```
-Response Formats:
-    Success (Status 200 OK):
-[
+1. Get All Tasks
+GET http://localhost:3000/tasks
+Returns a list of all tasks available in the system.
+Response:
+Status: 200 OK
+Response: [
   {
-    "_id": "Task ID",
-    "title": "Task Title",
-    "description": "Task Description",
-    "status": "Task Status",
+    "_id": "64dcd46ab3038da1301794d4",
+    "title": "Hello world 2",
+    "description": "hello world this is nestJS",
+    "status": "OPEN",
     "__v": 0
   }
 ]
-Error - Task Not Found (Status 404 NOT FOUND):
+```
+
+```
+2. Create a New Task
+POST http://localhost:3000/tasks
+Create a new task with the provided data.
+Request Body:
 {
-  "message": "Task with ID :id not found",
+  "title": "Hello world 3",
+  "description": "hello world3 this is nestJS",
+  "status": "OPEN"
+}
+
+Response:
+Status: 200 OK
+Response: [
+  {
+    "_id": "64dcd46ab3038da1301794d4",
+    "title": "Hello world 2",
+    "description": "hello world this is nestJS",
+    "status": "OPEN",
+    "__v": 0
+  }
+]
+```
+
+```
+3. Update a Task
+PUT http://localhost:3000/tasks/64dcd46ab3038da1301794d4
+Update the task with the provided ID.
+Request Body:
+{
+  "title": "Hello world 3",
+  "description": "hello world3 this is nestJS",
+  "status": "OPEN"
+}
+Response (Success):
+Status: 200 OK
+Response: [
+  {
+    "_id": "64dcd46ab3038da1301794d4",
+    "title": "Hello world 3",
+    "description": "hello world3 this is nestJS",
+    "status": "OPEN",
+    "__v": 0
+  }
+]
+Response (Error - Task Not Found):
+Status: 404 NOT FOUND
+Response: {
+  "message": "Task with ID 64dcdc4991281b336bb2163f not found",
+  "error": "Not Found",
+  "statusCode": 404
+}
+```
+
+```
+4. Delete a Task
+DELETE http://localhost:3000/tasks/64dcd46ab3038da1301794d4
+Delete the task with the provided ID.
+Response (Success):
+
+Status: 200 OK
+Response: []
+
+Response (Error - Task Not Found):
+Status: 404 NOT FOUND
+Response: {
+  "message": "Task with ID 64dcdc4991281b336bb2163f not found",
   "error": "Not Found",
   "statusCode": 404
 }
