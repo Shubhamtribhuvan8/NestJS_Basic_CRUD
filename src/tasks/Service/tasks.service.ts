@@ -1,50 +1,46 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
+import { InjectModel } from '@nestjs/mongoose';
+import { Model } from 'mongoose';
 import { Task, TaskStatus } from '../Model/task.model';
-import { CreateTaskDto } from '../DTO/task.dto';
+import { CreateTaskDto } from '../dto/task.dto';
 
 @Injectable()
 export class TasksService {
-  private tasks: Task[] = [];
-
-  getAllTasks(): Task[] {
-    return this.tasks;
+  async getAllTasks(): Promise<Task[]> {
+    return this.taskModel.find().exec();
   }
+  constructor(@InjectModel('Task') private readonly taskModel: Model<Task>) { }
 
-  createTask(createTaskDto: CreateTaskDto): Task {
+  async createTask(createTaskDto: CreateTaskDto): Promise<Task> {
     const { title, description } = createTaskDto;
-    const id = uuidv4();
-    const task: Task = {
-      id,
+    const task = new this.taskModel({
       title,
       description,
-      status: TaskStatus.OPEN,
-    };
-    this.tasks.push(task);
-    return task;
+    });
+    return task.save();
   }
-  updateTaskStatus(id: string, status: TaskStatus): Task {
-    const task = this.getTaskById(id);
-    if (!task) {
-      throw new NotFoundException(`Task with ID ${id} not found`);
-    }
+
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
     task.status = status;
-    return task;
+    return task.save();
   }
-
-  deleteTask(id: string): void {
-    const found = this.getTaskById(id);
+  async deleteTask(id: string): Promise<void> {
+    const found = await this.getTaskById(id);
     if (!found) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
-    this.tasks = this.tasks.filter((task) => task.id !== id);
+    await this.taskModel.deleteOne({ _id: id }).exec();
   }
-
-  private getTaskById(id: string): Task {
-    const found = this.tasks.find((task) => task.id === id);
-    if (!found) {
+  private async getTaskById(id: string): Promise<Task> {
+    try {
+      const task = await this.taskModel.findById(id).exec();
+      if (!task) {
+        throw new NotFoundException(`Task with ID ${id} not found`);
+      }
+      return task;
+    } catch (error) {
       throw new NotFoundException(`Task with ID ${id} not found`);
     }
-    return found;
   }
 }

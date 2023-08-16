@@ -57,17 +57,73 @@ $ npm run test:e2e
 # test coverage
 $ npm run test:cov
 ```
+## This API allows you to manage tasks using basic CRUD operations. It is built using NestJS and MongoDB as the database
 
-## Support
+# Endpoints:
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+## Get All Tasks
 
-## Stay in touch
+    Get a list of all tasks in the system.
+        Method: GET
+        URL: http://localhost:3000/tasks
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+    Create a New Task
 
-## License
+    Create a new task with the provided data.
 
-Nest is [MIT licensed](LICENSE).
+        Method: POST
+
+        URL: http://localhost:3000/tasks
+
+        Request Body:
+
+    {
+      "title": "Task Title",
+      "description": "Task Description",
+      "status": "Task Status"
+    }
+
+Update a Task
+
+Update an existing task using its ID.
+
+    Method: PUT
+
+    URL: http://localhost:3000/tasks/:id
+
+    Request Body:
+
+        {
+          "title": "Updated Title",
+          "description": "Updated Description",
+          "status": "Updated Status"
+        }
+
+    Delete a Task
+
+    Delete a task using its ID.
+        Method: DELETE
+        URL: http://localhost:3000/tasks/:id
+
+Response Formats:
+    Success (Status 200 OK):
+
+
+[
+  {
+    "_id": "Task ID",
+    "title": "Task Title",
+    "description": "Task Description",
+    "status": "Task Status",
+    "__v": 0
+  }
+]
+
+Error - Task Not Found (Status 404 NOT FOUND):
+
+
+{
+  "message": "Task with ID :id not found",
+  "error": "Not Found",
+  "statusCode": 404
+}
