@@ -82,7 +82,7 @@ $ npm run test:cov
       "description": "Task Description",
       "status": "Task Status"
     }
-
+```
 Update a Task
 
 Update an existing task using its ID.
@@ -99,6 +99,7 @@ Update an existing task using its ID.
           "status": "Updated Status"
         }
 
+   ```     
     Delete a Task
 
     Delete a task using its ID.
@@ -127,3 +128,4 @@ Error - Task Not Found (Status 404 NOT FOUND):
   "error": "Not Found",
   "statusCode": 404
 }
+```
